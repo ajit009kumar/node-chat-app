@@ -2,15 +2,11 @@ var socket = io();
 
 socket.on('connect',function(){
     console.log('Connected to server');
-    socket.emit('createEmail',{
-        from: 'jan@gmail.com',
-        text: 'Hey this is jan'
-    });
+    // socket.emit('createEmail',{
+    //     from: 'jan@gmail.com',
+    //     text: 'Hey this is jan'
+    // });
 
-    socket.emit('createMessage',{
-        'from': 'Abhishek',
-        'text': 'How you doing'
-    });
 });
 
 
