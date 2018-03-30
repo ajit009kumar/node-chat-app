@@ -22,6 +22,18 @@ function scrollToBottom() {
 
 socket.on('connect',function(){
     console.log('Connected to server');
+
+    var params = jQuery.deparam(window.location.search);
+    socket.emit('join', params , function(err) {
+        if(err) {
+            alert(err);
+            window.location.href = '/';
+        }
+        else {
+            console.log('No error');
+        }
+    })
+
     // socket.emit('createEmail',{
     //     from: 'jan@gmail.com',
     //     text: 'Hey this is jan'
@@ -34,6 +46,17 @@ socket.on('connect',function(){
 socket.on('disconnect',function(){
     console.log('Disconnected from Server');
 });
+
+socket.on('UpdateUsersList',function(users){
+
+    var ol = jQuery('<ol></ol>');
+    users.forEach(function(user){
+        ol.append(jQuery('<li></li>').text(user));
+    })
+    jQuery('#users').html(ol);
+
+    console.log('UsersList', users);
+})
 
 socket.on('newEmail',function(email){
     console.log('New Email',email);
@@ -92,7 +115,6 @@ jQuery('#message-form').on('submit', function(e) {
     e.preventDefault();
     let messageTextBox = jQuery('[name = "message"]');
     socket.emit('createMessage',{
-        from: 'User',
         text: messageTextBox.val()
     },function(){
         messageTextBox.val(' ');
